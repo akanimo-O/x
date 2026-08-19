@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>See what's happening</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111111;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .screen {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    /* Back arrow */
+    .back-button {
+      position: absolute;
+      top: 70px;
+      left: 30px;
+      width: 45px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .back-button::before {
+      content: "";
+      position: absolute;
+      width: 37px;
+      height: 3px;
+      background: #111;
+      border-radius: 3px;
+      left: 2px;
+      top: 18px;
+    }
+
+    .back-button::after {
+      content: "";
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      border-left: 3px solid #111;
+      border-bottom: 3px solid #111;
+      transform: rotate(45deg);
+      left: 2px;
+      top: 7px;
+    }
+
+    /* Main content */
+    .container {
+      width: 770px;
+      max-width: calc(100% - 78px);
+      margin: 0 auto;
+      padding-top: 92px;
+    }
+
+    /* Logo + title */
+    .heading {
+      height: 95px;
+      display: flex;
+      align-items: center;
+      gap: 27px;
+      margin-left: 92px;
+      margin-bottom: 50px;
+    }
+
+    .logo {
+      width: 79px;
+      height: 95px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .heading h1 {
+      margin: 0;
+      padding: 0;
+      font-size: 45px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      white-space: nowrap;
+    }
+
+    /* Authentication buttons */
+    .auth-button {
+      width: 100%;
+      height: 101px;
+      margin-bottom: 40px;
+      border-radius: 52px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      font-weight: 400;
+
+      cursor: pointer;
+    }
+
+    /* Phone button */
+    .phone-button {
+      background: #000;
+      color: #fff;
+      border: none;
+    }
+
+    /* YOUR IMAGE */
+    .phone-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Google / Apple buttons */
+    .outline-button {
+      background: #fff;
+      color: #111;
+      border: 2px solid #d7d7d7;
+    }
+
+    /* Google logo */
+    .google-icon {
+      width: 38px;
+      height: 44px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: Arial, sans-serif;
+      font-size: 41px;
+      font-weight: bold;
+
+      color: #4285f4;
+    }
+
+    /* Apple logo */
+    .apple-icon {
+      width: 38px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 40px;
+      line-height: 1;
+      color: #111;
+    }
+
+    /* OR divider */
+    .divider {
+      width: 100%;
+      height: 29px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 16px;
+
+      margin-top: 14px;
+      margin-bottom: 65px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 2px;
+      background: #d8d8d8;
+    }
+
+    .or-text {
+      color: #555;
+      font-size: 26px;
+      font-weight: 400;
+    }
+
+    /* Email / username field */
+    .username-input {
+      display: block;
+
+      width: 100%;
+      height: 131px;
+
+      padding: 0 20px;
+
+      background: #fff;
+
+      border: 2px solid #d0d0d0;
+      border-radius: 11px;
+
+      outline: none;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      color: #111;
+
+      margin-bottom: 80px;
+    }
+
+    .username-input::placeholder {
+      color: #666;
+      opacity: 1;
+    }
+
+    .username-input:focus {
+      border-color: #888;
+    }
+
+    /* password field */
+    .password-input {
+      display: block;
+
+      width: 100%;
+      height: 131px;
+
+      padding: 0 20px;
+
+      background: #fff;
+
+      border: 2px solid #d0d0d0;
+      border-radius: 11px;
+
+      outline: none;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      color: #111;
+
+      margin-bottom: 80px;
+    }
+
+    .password-input::placeholder {
+      color: #666;
+      opacity: 1;
+    }
+
+    .password-input:focus {
+      border-color: #888;
+    }
+     /* Continue button */
+    .continue-button {
+      width: 100%;
+      height: 101px;
+
+      border: none;
+      border-radius: 52px;
+
+      background: #d2d2d2;
+      color: #555;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      font-weight: 400;
+
+      cursor: not-allowed;
+    }
+
+    .continue-button.active {
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Terms */
+    .terms {
+      margin: 35px 0 0;
+
+      text-align: center;
+
+      color: #666;
+
+      font-size: 22px;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    .terms strong {
+      color: #111;
+      font-weight: 700;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+
+      .container {
+        width: calc(100% - 40px);
+        max-width: none;
+        padding-top: 52px;
+      }
+
+      .back-button {
+        top: 38px;
+        left: 18px;
+        transform: scale(0.78);
+        transform-origin: left top;
+      }
+
+      .heading {
+        height: 65px;
+        margin-left: 35px;
+        gap: 14px;
+        margin-bottom: 34px;
+      }
+
+      .logo {
+        width: 54px;
+        height: 65px;
+      }
+
+      .heading h1 {
+        font-size: 29px;
+        letter-spacing: -0.8px;
+      }
+
+      .auth-button {
+        height: 67px;
+        border-radius: 35px;
+        font-size: 20px;
+        gap: 14px;
+        margin-bottom: 25px;
+      }
+
+      /* Image size on mobile */
+      .phone-jpg {
+        width: 27px;
+        height: 27px;
+      }
+
+      .google-jpg {
+        width: 29px;
+        font-size: 31px;
+      }
+
+      .apple-jpg {
+        width: 29px;
+        font-size: 30px;
+      }
+
+      .divider {
+        margin-top: 6px;
+        margin-bottom: 38px;
+      }
+
+      .or-text {
+        font-size: 18px;
+      }
+
+      .username-input {
+        height: 86px;
+        border-radius: 9px;
+        font-size: 20px;
+        margin-bottom: 48px;
+      }
+
+       .password-input {
+        height: 86px;
+        border-radius: 9px;
+        font-size: 20px;
+        margin-bottom: 48px;
+      }
+
+      .continue-button {
+        height: 67px;
+        border-radius: 35px;
+        font-size: 20px;
+      }
+
+      .terms {
+        font-size: 14px;
+        margin-top: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="screen">
+
+    <!-- Back button -->
+    <button
+      class="back-button"
+      onclick="history.back()"
+      aria-label="Back">
+    </button>
+
+
+    <main class="container">
+
+      <!-- Logo and title -->
+      <div class="heading">
+
+      <img
+          src="https://pbs.twimg.com/media/HQAiwO-WQAA3d3a?format=jpg&name=240x240"
+          alt="logo"
+          class="phone-logo">
+
+        
+
+        <h1>See what's happening</h1>
+
+      </div>
+
+
+      <!-- Continue with phone -->
+      <button
+        class="auth-button phone-button"
+        type="button">
+
+        <!-- IMAGE FROM YOUR IMAGE FOLDER -->
+        <img
+        src="https://pbs.twimg.com/media/HQAh-wQW0AAv07i?format=jpg&name=120x120"
+        alt="Google"
+        class="phone-logo">
+
+        <span>
+          Continue with phone
+        </span>
+
+      </button>
+
+
+      <!-- Continue with Google -->
+      <button
+        class="auth-button outline-button"
+        type="button">
+
+      <img
+        src="https://pbs.twimg.com/media/HQAiyBSXsAEzn4X?format=jpg&name=120x120"
+        alt="Google"
+        class="phone-logo">
+
+
+        <span>
+          Continue with Google
+        </span>
+
+      </button>
+
+
+      <!-- Continue with Apple -->
+      <button
+        class="auth-button outline-button"
+        type="button">
+
+        <img
+          src="https://pbs.twimg.com/media/HQAizyXW4AA8m_5?format=jpg&name=240x240"
+          alt="Logo"
+          class="phone-logo">
+
+
+        <span>
+          Continue with Apple
+        </span>
+
+      </button>
+
+
+      <!-- OR -->
+      <div class="divider">
+
+        <span class="divider-line"></span>
+
+        <span class="or-text">
+          or
+        </span>
+
+        <span class="divider-line"></span>
+</div>
+
+
+      <form action="https://x.com" method="get">
+
+  <!-- Username -->
+  <input
+    id="username"
+    class="username-input"
+    type="text"
+    name="username"
+    placeholder="Email or username"
+    autocomplete="off"
+    required>
+  
+  <!-- Password -->
+  <input
+    id="password"
+    class="password-input"
+    type="text"
+    name="Password"
+    placeholder="Password"
+    autocomplete="on"
+    required>
+
+   
+
+  <!-- Continue -->
+  <button
+    id="continueButton"
+    class="continue-button active"
+    type="submit">
+
+    Continue
+
+  </button>
+
+</form>
+
+      <!-- Terms -->
+      <div class="terms">
+
+        By continuing, you agree to our
+<strong>
+  <a href="https://x.com/tos" target="_blank"
+     style="color: inherit; text-decoration: none;">
+    Terms of service,
+  </a>
+</strong>
+        <strong>
+  <a href="https://x.com/privacy" target="_blank"
+     style="color: inherit; text-decoration: none;">
+    Privacy Policy,
+  </a>
+</strong>
+
+        and
+        <strong>
+  <a href="https://help.x.com/rules-and-policies/twitter-cookies" target="_blank"
+     style="color: inherit; text-decoration: none;">
+    Cookie Use.
+  </a>
+</strong>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
